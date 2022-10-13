@@ -319,7 +319,7 @@ if selected == "Interpretation":
     #cc=ax.tricontourf(triang,rho,levels=clevels, cmap=colourscheme)
                 cc=ax.tricontourf(triang,rho,levels=clevels_res, norm=mpl.colors.LogNorm(vmin=rhos_min, vmax=rhos_max), cmap=colourscheme)
                 ax.set_ylim(min(z)-2, max(z)+2)
-                ax.set_xlim(0, max(x)+20)
+                ax.set_xlim(0, max(x)+5)
 
             
 
@@ -350,7 +350,7 @@ if selected == "Interpretation":
     #cc=ax.tricontourf(triang,rho,levels=clevels, cmap=colourscheme)
                 cc_cond=ax.tricontourf(triang,rho,levels=clevels_cond, norm=mpl.colors.LogNorm(vmin=cond_min, vmax=cond_max), cmap=colourscheme)
                 ax.set_ylim(min(z)-2, max(z)+2)
-                ax.set_xlim(0, max(x)+20)
+                ax.set_xlim(0, max(x)+5)
 
             
 
