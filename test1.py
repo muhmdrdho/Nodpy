@@ -2,7 +2,7 @@
 from streamlit_folium import re
 from index_lib import *
 
-st.set_page_config(page_title="Nodpy", layout="centered", initial_sidebar_state="auto")
+st.set_page_config(page_title="Nodpy", layout="wide", initial_sidebar_state="auto")
 #Sidebar
 st.sidebar.image('app/assets/logo/Nodpy2.png')
 with st.sidebar:
