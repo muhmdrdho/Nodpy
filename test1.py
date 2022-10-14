@@ -139,8 +139,8 @@ if selected == "Preacquisition":
                                                         control=False,
                                                         highlight_function=highlight_function,
                                                         tooltip= folium.features.GeoJsonTooltip(
-                                                                fields=['NAME_x','FORMATION_x'],
-                                                                aliases=['NAME','FORMATION'],
+                                                                fields=['NAME_x','CLASS_LITH_y'],
+                                                                aliases=['FORMATION','LITOLOGY'],
                                                                 style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
 
                                                         )
