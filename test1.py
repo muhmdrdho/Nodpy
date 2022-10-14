@@ -320,14 +320,15 @@ if selected == "Interpretation":
                 cc=ax.tricontourf(triang,rho,levels=clevels_res, norm=mpl.colors.LogNorm(vmin=rhos_min, vmax=rhos_max), cmap=colourscheme)
                 ax.set_ylim(min(z)-2, max(z)+2)
                 ax.set_xlim(0, max(x)+5)
+                axes_res[0].set_visible(False)
 
             
 
             clabels=[]
             for c in clevels_res: 
                 clabels.append('%d' % c) 
-            thecbar=fig.colorbar(cc, ax=axes_res,ticks=clevels_res, orientation="vertical")
-            thecbar.ax.set_yticklabels(clabels)
+            thecbar=fig.colorbar(cc, ax=axes_res,ticks=clevels_res, orientation="horizontal")
+            thecbar.ax.set_xticklabels(clabels, rotation=45)
 
        #Conductivity
             cond_min = filein['Cond'].min()
@@ -351,14 +352,15 @@ if selected == "Interpretation":
                 cc_cond=ax.tricontourf(triang,rho,levels=clevels_cond, norm=mpl.colors.LogNorm(vmin=cond_min, vmax=cond_max), cmap=colourscheme)
                 ax.set_ylim(min(z)-2, max(z)+2)
                 ax.set_xlim(0, max(x)+5)
+                axes_cond[0].set_visible(False)
 
             
 
             clabels=[]
             for c in clevels_cond: 
                 clabels.append('%2.4f' % c) 
-            thecbar=fig.colorbar(cc_cond, ax=axes_cond,ticks=clevels_cond, orientation="vertical")
-            thecbar.ax.set_yticklabels(clabels)
+            thecbar=fig.colorbar(cc_cond, ax=axes_cond,ticks=clevels_cond, orientation="horizontal")
+            thecbar.ax.set_xticklabels(clabels, rotation=45)
 
             with dash:
                 cols = st.columns(2)
