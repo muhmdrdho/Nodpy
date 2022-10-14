@@ -3,6 +3,12 @@ from streamlit_folium import re
 from index_lib import *
 
 st.set_page_config(page_title="Nodpy", layout="wide", initial_sidebar_state="auto")
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        </style>
+        """
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 #Sidebar
 st.sidebar.image('app/assets/logo/Nodpy2.png')
 with st.sidebar:
