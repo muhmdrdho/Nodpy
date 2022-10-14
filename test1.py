@@ -104,12 +104,12 @@ if selected == "Preacquisition":
         for i in range(len(coordinate_data)):
             folium.Marker(location=[coordinate_data.iloc[i]['Latitude'], coordinate_data.iloc[i]['Longitude']]).add_to(pre_map)
     
-    option_map = st.selectbox("Choose Your Map",("Digital Map", "Geology Map"))
+    col0, col1 = st.columns(2)
     
-    if option_map == "Digital Map":
-        folium_static(pre_map, width=1350)
+    with col0:
+        folium_static(pre_map, width=600)
 
-    else :
+    with col1:
         Main_Geology = folium.Map(tiles='StamenTerrain',location=[-1.609972, 103.607254], zoom_start=6)
         Geology_colormap = cm.LinearColormap(colors=['darkblue','blue','cyan','yellow','orange','red'])
         Geology_Map = folium.Choropleth(geo_data=final_df,
@@ -147,7 +147,7 @@ if selected == "Preacquisition":
                                                     )
         Main_Geology.add_child(hoover)
 
-        folium_static(Main_Geology, width=1350)
+        folium_static(Main_Geology, width=600)
 
     #Place of the map
     
@@ -288,15 +288,17 @@ if selected == "Interpretation":
                 folium.Marker(location=[coordinate_data.iloc[i]['Latitude'], coordinate_data.iloc[i]['Longitude']]).add_to(Main_Geology)
     
     
-    
             with st.expander('MapBox'):
-                Map_box = st.radio("Choose your Map",('Digital Map','Geology Map'))
+                
                 with st.container():
-                    if Map_box == 'Digital Map':
-                        folium_static(sample_map, width=1300)
+                    cols1, cols2 = st.columns(2)
+
+                    with cols1:
+                        folium_static(sample_map, width=600)
                     
-                    else:
-                        folium_static(Main_Geology, width=1300)
+                
+                    with cols2:
+                        folium_static(Main_Geology, width=600)
 
 
 
