@@ -2,7 +2,7 @@
 from streamlit_folium import re
 from index_lib import *
 
-st.set_page_config(page_title="Nodpy", layout="wide", initial_sidebar_state="auto")
+st.set_page_config(page_title="Nodpy", layout="centered", initial_sidebar_state="auto")
 hide_menu_style = """
         <style>
         #MainMenu {visibility: hidden;}
@@ -107,7 +107,7 @@ if selected == "Preacquisition":
     col0, col1 = st.columns(2)
     
     with col0:
-        folium_static(pre_map, width=600)
+        folium_static(pre_map)
 
     with col1:
         Main_Geology = folium.Map(tiles='StamenTerrain',location=[-1.609972, 103.607254], zoom_start=6)
@@ -147,7 +147,7 @@ if selected == "Preacquisition":
                                                     )
         Main_Geology.add_child(hoover)
 
-        folium_static(Main_Geology, width=600)
+        folium_static(Main_Geology)
 
     #Place of the map
     
