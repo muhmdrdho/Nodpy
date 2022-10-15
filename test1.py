@@ -108,7 +108,7 @@ if selected == "Preacquisition":
         col0, col1 = st.columns(2, gap="small")
     
         with col0:
-                folium_static(pre_map)
+                folium_static(pre_map, width=550)
 
         with col1:
                 Main_Geology = folium.Map(tiles='StamenTerrain',location=[-1.609972, 103.607254], zoom_start=6)
@@ -148,7 +148,7 @@ if selected == "Preacquisition":
                                                             )
                 Main_Geology.add_child(hoover)
 
-                folium_static(Main_Geology)
+                folium_static(Main_Geology, width=550)
 
     #Place of the map
     
