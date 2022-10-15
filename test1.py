@@ -84,7 +84,7 @@ if selected == "Preacquisition":
                                                         control = True
                                                         ).add_to(pre_map)
 
-    n = folium.GeoJson(
+    Geology_premap = folium.GeoJson(
                                 name= 'Geology Map',
                                 data = state_geo,
                                 style_function = lambda feature: {
@@ -93,7 +93,11 @@ if selected == "Preacquisition":
                                     'color' : 'black',
                                     'weight' : 1,
                                     }    
-                                ).add_to(pre_map)
+
+                                    ).add_to(pre_map)
+    folium.GeoJsonTooltip(['NAME', 'CLASS_LITH']).add_to(Geology_premap)
+            
+    
     #Layer control
     folium.LayerControl().add_to(pre_map)
     
