@@ -129,7 +129,9 @@ if selected == "Preacquisition":
             folium.Marker(location=[coordinate_data.iloc[i]['Latitude'], coordinate_data.iloc[i]['Longitude']]).add_to(pre_map)
     
  
-        
+    st.markdown("""
+                                    <h3>Digital Map</h3>
+                    """, unsafe_allow_html=True)  
     folium_static(pre_map)
 
     #Place of the map
@@ -245,7 +247,9 @@ if selected == "Interpretation":
     
     
     
-            
+            st.markdown("""
+                                    <h3>Digital Map</h3>
+                    """, unsafe_allow_html=True)
                 
             folium_static(sample_map)
 
