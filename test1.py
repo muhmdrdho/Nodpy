@@ -104,50 +104,51 @@ if selected == "Preacquisition":
         for i in range(len(coordinate_data)):
             folium.Marker(location=[coordinate_data.iloc[i]['Latitude'], coordinate_data.iloc[i]['Longitude']]).add_to(pre_map)
     
-    col0, col1 = st.columns(2, gap="small")
+    with st.container():
+        col0, col1 = st.columns(2, gap="small")
     
-    with col0:
-        folium_static(pre_map)
+        with col0:
+                folium_static(pre_map)
 
-    with col1:
-        Main_Geology = folium.Map(tiles='StamenTerrain',location=[-1.609972, 103.607254], zoom_start=6)
-        Geology_colormap = cm.LinearColormap(colors=['darkblue','blue','cyan','yellow','orange','red'])
-        Geology_Map = folium.Choropleth(geo_data=final_df,
-                                        data=final_df,
-                                        columns=["IDX_FORMATION", "IDX_FORMATIONX"],
-                                        key_on='feature.properties.IDX_FORMATION',
-                                        fill_color='Paired',
-                                        nan_fill_color='White',
-                                        line_opacity=0,
-                                        fill_opacity=1,
-                                        ).add_to(Main_Geology)
-        style_function = lambda x: {
-                                                'fillColor':'#ffffff',
-                                                 'color':'#000000',
-                                                 'fillOpacity': 0,
-                                                 'weight': 0
-                                                }
-        highlight_function = lambda x: {
-                                                     'fillColor':'#000000',
-                                                     'color':'#000000',
-                                                     'fillOpacity':0,
-                                                     'weight':0
-                                                    } 
-        hoover = folium.features.GeoJson(
-                                                        data = final_df,
-                                                        style_function=style_function,
-                                                        control=False,
-                                                        highlight_function=highlight_function,
-                                                        tooltip= folium.features.GeoJsonTooltip(
-                                                                fields=['NAME_x','CLASS_LITH_y'],
-                                                                aliases=['FORMATION','LITOLOGY'],
-                                                                style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
+        with col1:
+                Main_Geology = folium.Map(tiles='StamenTerrain',location=[-1.609972, 103.607254], zoom_start=6)
+                Geology_colormap = cm.LinearColormap(colors=['darkblue','blue','cyan','yellow','orange','red'])
+                Geology_Map = folium.Choropleth(geo_data=final_df,
+                                                data=final_df,
+                                                columns=["IDX_FORMATION", "IDX_FORMATIONX"],
+                                                key_on='feature.properties.IDX_FORMATION',
+                                                fill_color='Paired',
+                                                nan_fill_color='White',
+                                                line_opacity=0,
+                                                fill_opacity=1,
+                                                ).add_to(Main_Geology)
+                style_function = lambda x: {
+                                                        'fillColor':'#ffffff',
+                                                         'color':'#000000',
+                                                         'fillOpacity': 0,
+                                                         'weight': 0
+                                                        }
+                highlight_function = lambda x: {
+                                                             'fillColor':'#000000',
+                                                             'color':'#000000',
+                                                             'fillOpacity':0,
+                                                             'weight':0
+                                                            } 
+                hoover = folium.features.GeoJson(
+                                                                data = final_df,
+                                                                style_function=style_function,
+                                                                control=False,
+                                                                highlight_function=highlight_function,
+                                                                tooltip= folium.features.GeoJsonTooltip(
+                                                                        fields=['NAME_x','CLASS_LITH_y'],
+                                                                        aliases=['FORMATION','LITOLOGY'],
+                                                                        style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
 
-                                                        )
-                                                    )
-        Main_Geology.add_child(hoover)
+                                                                )
+                                                            )
+                Main_Geology.add_child(hoover)
 
-        folium_static(Main_Geology)
+                folium_static(Main_Geology)
 
     #Place of the map
     
