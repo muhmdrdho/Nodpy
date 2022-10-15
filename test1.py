@@ -104,7 +104,7 @@ if selected == "Preacquisition":
         for i in range(len(coordinate_data)):
             folium.Marker(location=[coordinate_data.iloc[i]['Latitude'], coordinate_data.iloc[i]['Longitude']]).add_to(pre_map)
     
-    col0, col1 = st.columns(2)
+    col0, col1 = st.columns(2, gap="small")
     
     with col0:
         folium_static(pre_map)
