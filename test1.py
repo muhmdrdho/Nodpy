@@ -1,14 +1,7 @@
 
-from streamlit_folium import re
 from index_lib import *
 
-st.set_page_config(page_title="Nodpy", layout="wide", initial_sidebar_state="auto")
-hide_menu_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        </style>
-        """
-st.markdown(hide_menu_style, unsafe_allow_html=True)
+st.set_page_config(page_title="Nodpy",layout="centered")
 #Sidebar
 st.sidebar.image('app/assets/logo/Nodpy2.png')
 with st.sidebar:
@@ -24,6 +17,16 @@ state_geo = "app/assets/data/Geology+Jambi.geojson"
 geojson = gpd.read_file(state_geo)
 geojson_states = list(geojson.SYMBOLS.values)
 final_df = geojson.merge(df_map, on="SYMBOLS")
+map_dict = df_map1.set_index('SYMBOLS')['IDX_FORMATION'].to_dict()
+
+
+color_scale = LinearColormap(['darkblue','brown','tan','olive','blue','cyan','yellow','orange','red','aquamarine','azure','navy','teal','beige'], vmin = min(map_dict.values()), vmax = max(map_dict.values()))
+def get_color(feature):
+    value = map_dict.get(feature['properties']['SYMBOLS'])
+    if value is None:
+        return '#8c8c8c' # MISSING -> gray
+    else:
+        return color_scale(value)
 
     
 uploader = st.sidebar.file_uploader('Choose your file')
@@ -74,6 +77,17 @@ if selected == "Preacquisition":
                                                         overlay = True,
                                                         control = True
                                                         ).add_to(pre_map)
+
+    n = folium.GeoJson(
+                                name= 'Geology Map',
+                                data = state_geo,
+                                style_function = lambda feature: {
+                                    'fillColor': get_color(feature),
+                                    'fillOpacity': 0.7,
+                                    'color' : 'black',
+                                    'weight' : 1,
+                                    }    
+                                ).add_to(pre_map)
     #Layer control
     folium.LayerControl().add_to(pre_map)
     
@@ -104,51 +118,9 @@ if selected == "Preacquisition":
         for i in range(len(coordinate_data)):
             folium.Marker(location=[coordinate_data.iloc[i]['Latitude'], coordinate_data.iloc[i]['Longitude']]).add_to(pre_map)
     
-    with st.container():
-        col0, col1 = st.columns(2, gap="small")
-    
-        with col0:
-                folium_static(pre_map, width=550)
-
-        with col1:
-                Main_Geology = folium.Map(tiles='StamenTerrain',location=[-1.609972, 103.607254], zoom_start=6)
-                Geology_colormap = cm.LinearColormap(colors=['darkblue','blue','cyan','yellow','orange','red'])
-                Geology_Map = folium.Choropleth(geo_data=final_df,
-                                                data=final_df,
-                                                columns=["IDX_FORMATION", "IDX_FORMATIONX"],
-                                                key_on='feature.properties.IDX_FORMATION',
-                                                fill_color='Paired',
-                                                nan_fill_color='White',
-                                                line_opacity=0,
-                                                fill_opacity=1,
-                                                ).add_to(Main_Geology)
-                style_function = lambda x: {
-                                                        'fillColor':'#ffffff',
-                                                         'color':'#000000',
-                                                         'fillOpacity': 0,
-                                                         'weight': 0
-                                                        }
-                highlight_function = lambda x: {
-                                                             'fillColor':'#000000',
-                                                             'color':'#000000',
-                                                             'fillOpacity':0,
-                                                             'weight':0
-                                                            } 
-                hoover = folium.features.GeoJson(
-                                                                data = final_df,
-                                                                style_function=style_function,
-                                                                control=False,
-                                                                highlight_function=highlight_function,
-                                                                tooltip= folium.features.GeoJsonTooltip(
-                                                                        fields=['NAME_x','CLASS_LITH_y'],
-                                                                        aliases=['FORMATION','LITOLOGY'],
-                                                                        style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
-
-                                                                )
-                                                            )
-                Main_Geology.add_child(hoover)
-
-                folium_static(Main_Geology, width=550)
+ 
+        
+    folium_static(pre_map)
 
     #Place of the map
     
@@ -212,6 +184,16 @@ if selected == "Interpretation":
                                                         overlay = True,
                                                         control = True
                                                         ).add_to(sample_map)
+            Geology_Map = folium.GeoJson(
+                                name= 'Geology Map',
+                                data = state_geo,
+                                style_function = lambda feature: {
+                                    'fillColor': get_color(feature),
+                                    'fillOpacity': 0.7,
+                                    'color' : 'black',
+                                    'weight' : 1,
+                                    }    
+                                ).add_to(sample_map)
             
             #Layer Control
             folium.LayerControl().add_to(sample_map)
@@ -221,6 +203,8 @@ if selected == "Interpretation":
             
             #Locate Control
             plugins.LocateControl().add_to(sample_map)
+
+            folium.GeoJsonTooltip(['NAME', 'CLASS_LITH']).add_to(Geology_Map)
             
             #Cursor Postion
             fmtr = "function(num) {return L.Util.formatNum(num, 3) + ' º ';};"
@@ -244,62 +228,16 @@ if selected == "Interpretation":
             #Geology Map
 
             #Main part of geology map
-            Main_Geology = folium.Map(tiles='StamenTerrain',location=[-1.609972, 103.607254], zoom_start=6)
-            Geology_colormap = cm.LinearColormap(colors=['darkblue','blue','cyan','yellow','orange','red'])
-            #Geology choropleth map
-            Geology_Map = folium.Choropleth(geo_data=final_df,
-                                        data=final_df,
-                                        columns=["IDX_FORMATION", "IDX_FORMATIONX"],
-                                        key_on='feature.properties.IDX_FORMATION',
-                                        fill_color='Paired',
-                                        nan_fill_color='White',
-                                        line_opacity=0,
-                                        fill_opacity=1,
-                                        ).add_to(Main_Geology)
-
-            #Pop up, tooltips of Geology Choropleth map
-            style_function = lambda x: {
-                                                'fillColor':'#ffffff',
-                                                 'color':'#000000',
-                                                 'fillOpacity': 0,
-                                                 'weight': 0
-                                                }
-            highlight_function = lambda x: {
-                                                     'fillColor':'#000000',
-                                                     'color':'#000000',
-                                                     'fillOpacity':0,
-                                                     'weight':0
-                                                    } 
-            hoover = folium.features.GeoJson(
-                                                        data = final_df,
-                                                        style_function=style_function,
-                                                        control=False,
-                                                        highlight_function=highlight_function,
-                                                        tooltip= folium.features.GeoJsonTooltip(
-                                                                fields=['NAME_x','FORMATION_x'],
-                                                                aliases=['NAME','FORMATION'],
-                                                                style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;")
-
-                                                        )
-                                                    )
-            Main_Geology.add_child(hoover)
+       
 
             #Marker of geology map based on coordinate data
-            for i in range(len(coordinate_data)):
-                folium.Marker(location=[coordinate_data.iloc[i]['Latitude'], coordinate_data.iloc[i]['Longitude']]).add_to(Main_Geology)
+            
     
     
-            with st.expander('MapBox'):
+    
+            
                 
-                with st.container():
-                    cols1, cols2 = st.columns(2)
-
-                    with cols1:
-                        folium_static(sample_map, width=600)
-                    
-                
-                    with cols2:
-                        folium_static(Main_Geology, width=600)
+            folium_static(sample_map)
 
 
 
@@ -328,15 +266,14 @@ if selected == "Interpretation":
     #cc=ax.tricontourf(triang,rho,levels=clevels, cmap=colourscheme)
                 cc=ax.tricontourf(triang,rho,levels=clevels_res, norm=mpl.colors.LogNorm(vmin=rhos_min, vmax=rhos_max), cmap=colourscheme)
                 ax.set_ylim(min(z)-2, max(z)+2)
-                ax.set_xlim(0, max(x)+5)
-                axes_res[0].set_visible(False)
+                ax.set_xlim(0, max(x)+2)
 
-            
+                axes_res[0].set_visible(False)
 
             clabels=[]
             for c in clevels_res: 
                 clabels.append('%d' % c) 
-            thecbar=fig.colorbar(cc, ax=axes_res,ticks=clevels_res, orientation="horizontal")
+            thecbar=fig.colorbar(cc, ax=axes_res,format='%.5f',ticks=clevels_res, orientation="horizontal")
             thecbar.ax.set_xticklabels(clabels, rotation=45)
 
        #Conductivity
@@ -361,14 +298,13 @@ if selected == "Interpretation":
                 cc_cond=ax.tricontourf(triang,rho,levels=clevels_cond, norm=mpl.colors.LogNorm(vmin=cond_min, vmax=cond_max), cmap=colourscheme)
                 ax.set_ylim(min(z)-2, max(z)+2)
                 ax.set_xlim(0, max(x)+5)
-                axes_cond[0].set_visible(False)
 
-            
+                axes_cond[0].set_visible(False)
 
             clabels=[]
             for c in clevels_cond: 
                 clabels.append('%2.4f' % c) 
-            thecbar=fig.colorbar(cc_cond, ax=axes_cond,ticks=clevels_cond, orientation="horizontal")
+            thecbar=fig.colorbar(cc_cond, ax=axes_cond,format='%.5f',ticks=clevels_cond, orientation="horizontal")
             thecbar.ax.set_xticklabels(clabels, rotation=45)
 
             with dash:
@@ -430,6 +366,9 @@ if selected == "Interpretation":
                     """, unsafe_allow_html=True)
                     data_view = AgGrid(dataframe=data, fit_columns_on_grid_load=True)
                 
-            
+if selected == "About":
+    st.image('app/assets/logo/Nodpy2.png', use_column_width=True)
+    st.markdown("<h3 style='text-align: center; color: black;'>nodpy is a python-based application with a streamlit container which is useful in processing resistivity geoelectrical data</h3>", unsafe_allow_html=True)
+
             
 
