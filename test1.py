@@ -2,6 +2,12 @@
 from index_lib import *
 
 st.set_page_config(page_title="Nodpy",layout="centered")
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        </style>
+        """
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 #Sidebar
 st.sidebar.image('app/assets/logo/Nodpy2.png')
 with st.sidebar:
