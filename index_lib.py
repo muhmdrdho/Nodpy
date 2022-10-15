@@ -16,3 +16,4 @@ from folium.plugins import StripePattern
 from folium import plugins
 import branca
 import branca.colormap as cm
+from branca.colormap import LinearColormap
