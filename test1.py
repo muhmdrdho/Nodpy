@@ -384,8 +384,10 @@ if selected == "About":
     st.image('app/assets/logo/Nodpy2.png', use_column_width=True)
     st.markdown("<h3 style='text-align: center; color: black;'>nodpy is a python-based application with a streamlit container which is useful in processing resistivity geoelectrical data</h3>", unsafe_allow_html=True)
     
-    update_exp = st.expander("See the updates!")
-    how_to_exp = st.expander("See how to do!")
-
+    with st.expander("See the updates!")
+        st.write("""this is the newest version of software""")
+        
+    with st.expander("See how to do it!")
+        st.write("""You just need the .csv data like in picture below""")
             
 
