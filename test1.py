@@ -369,7 +369,7 @@ if selected == "Interpretation":
                 st.markdown("""
                                     <h3>Datum View</h3>
                     """, unsafe_allow_html=True)
-                    st.pyplot(datum_fig)
+                st.pyplot(datum_fig)
                     #fig_html = mpld3.fig_to_html(datum_fig)
                     #components.html(fig_html, height=600)
                 
@@ -378,7 +378,7 @@ if selected == "Interpretation":
                 st.markdown("""
                                     <h3>Data</h3>
                     """, unsafe_allow_html=True)
-                    data_view = AgGrid(dataframe=data, fit_columns_on_grid_load=True)
+                data_view = AgGrid(dataframe=data, fit_columns_on_grid_load=True)
                 
 if selected == "About":
     st.image('app/assets/logo/Nodpy2.png', use_column_width=True)
