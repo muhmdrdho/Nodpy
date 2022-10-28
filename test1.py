@@ -364,18 +364,18 @@ if selected == "Interpretation":
         
         
             with file_view:
-                cols = st.columns(2)
-                with cols[0]:
-                    st.markdown("""
+             
+                
+                st.markdown("""
                                     <h3>Datum View</h3>
                     """, unsafe_allow_html=True)
                     st.pyplot(datum_fig)
                     #fig_html = mpld3.fig_to_html(datum_fig)
                     #components.html(fig_html, height=600)
-                with cols[1]:
+                
                     
 
-                    st.markdown("""
+                st.markdown("""
                                     <h3>Data</h3>
                     """, unsafe_allow_html=True)
                     data_view = AgGrid(dataframe=data, fit_columns_on_grid_load=True)
